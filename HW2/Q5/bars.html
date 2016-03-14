@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bar Chart</title>
+    <script src="../lib/d3/d3.v3.js"></script>
+    <style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.bar1 rect {
+  fill: steelblue;
+}
+
+.bar1 text.value {
+  fill: black;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.axis path {
+  fill: none;
+}
+
+.x1.axis line {
+  stroke: #fff;
+  stroke-opacity: .8;
+}
+
+.y1.axis path {
+  stroke: black;
+}
+
+.x2.axis line {
+  stroke: #fff;
+  stroke-opacity: .8;
+}
+
+.y2.axis path {
+  stroke: black;
+}
+
+    </style>
+  </head>
+  <H1>Number of Refugees in Past 10 Years</H1>
+  <body>
+
+    <script>
+
+var margin = {top: 20, right: 90, bottom: 30, left: 100},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var years = ["2005","2006","2007","2008","2009","2010","2011","2012","2013","2014"];
+
+    d3.select('body').append('p')
+      .attr('class','menu')
+      .text("Year ")
+      .style('font-size','16px');
+
+var select = d3.select('p').append('select')
+    .attr('class','select')
+    .on('change',redraw)
+    .selectAll('option')
+    .data(years)
+    .enter().append('option')
+    .text(function(d){ return d; });
+
+var format = d3.format(",.0f");
+
+var x1 = d3.scale.linear().range([0, width]),
+    y1 = d3.scale.ordinal().rangeRoundBands([0, height], .1),
+    x2 = d3.scale.linear().range([0, width]),
+    y2 = d3.scale.ordinal().rangeRoundBands([0, height], .1);
+    y3 = d3.scale.ordinal();
+
+var color = d3.scale.ordinal().range(["#98abc5","#7b6888","#6b486b","#a05d56","#ff8c00"]);
+
+
+var x1Axis = d3.svg.axis().scale(x1).orient("top").tickSize(-height),
+    y1Axis = d3.svg.axis().scale(y1).orient("left").tickSize(0),
+    x2Axis = d3.svg.axis().scale(x2).orient("top").tickSize(-height),
+    y2Axis = d3.svg.axis().scale(y2).orient("left").tickSize(0);
+
+var svg1 = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+var svg2 = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+
+redraw();
+
+function redraw() {
+
+  d3.selectAll("g.bar1").remove();
+  d3.selectAll("g.bar2").remove();
+  d3.selectAll("g.x1.axis").remove();
+  d3.selectAll("g.y1.axis").remove();
+  d3.selectAll("g.x2.axis").remove();
+  d3.selectAll("g.y2.axis").remove();
+
+  var year = d3.select('select').property('value')
+  d3.json("poc.json", function(jsondata) {
+
+    var data1 = d3.nest()
+      .key(function(d) { return d.Source;})
+      .rollup(function(d) { 
+      return d3.sum(d, function(g) {return g.Population; });
+      }).entries(jsondata[year]);
+
+    var data2 = d3.nest()
+      .key(function(d) { return d.Source;})
+      .entries(jsondata[year]);
+
+    var targetNames = ["Germany","France","United Kingdom","Netherlands","Sweden"];
+
+    function filterByName(obj){
+      if (targetNames.indexOf(obj["Target"]) > -1){
+        return true;
+      } else {
+        return false;
+      } 
+    }
+    data2.forEach(function(d) {
+      d.number = d.values.filter(filterByName).map(function(name){ return {name: name["Target"], value: name["Population"]}})
+    });
+
+    // Set the scale domain.
+    //x.domain([0, d3.max(data, function(d) { return d.values; })]);
+    x1.domain([0, 180000]);
+    y1.domain(data1.map(function(d) { return d.key; }));
+    x2.domain([0, 120000]);
+    y2.domain(data2.map(function(d) { return d.key; }));
+    y3.domain(targetNames).rangeRoundBands([0, y2.rangeBand()]);
+
+
+    var bar1 = svg1.selectAll("g.bar")
+        .data(data1)
+        .enter().append("g")
+        .attr("class", "bar1")
+        .attr("transform", function(d) { return "translate(0," + y1(d.key) + ")"; });
+
+    bar1.append("rect")
+        .attr("width", function(d) { return x1(d.values); })
+        .attr("height", y1.rangeBand());
+
+    bar1.append("text")
+        .attr("class", "value")
+        .attr("x", function(d) { return x1(d.values); })
+        .attr("y", y1.rangeBand() / 2)
+        .attr("dx", 3)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "start")
+        .text(function(d) { return format(d.values); });
+
+    var bar2 = svg2.selectAll("g.bar")
+        .data(data2)
+        .enter().append("g")
+        .attr("class", "bar2")
+        .attr("transform", function(d) { return "translate(0," + y2(d.key) + ")"; });
+    
+    bar2.selectAll("rect")
+        .data(function(d) { return d.number;})
+        .enter().append("rect")
+        .attr("height", y3.rangeBand())
+        .attr("x", 0)
+        .attr("y", function(d){ return y3(d.name);})
+        .attr("width", function(d){ return x2(d.value);})
+        .style("fill",function(d){ return color(d.name);});
+/*
+    bar1.append("text")
+        .attr("class", "value")
+        .attr("x", function(d) { return x1(d.values); })
+        .attr("y", y1.rangeBand() / 2)
+        .attr("dx", 3)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "start")
+        .text(function(d) { return format(d.values); });
+*/
+    svg1.append("g")
+        .attr("class", "x1 axis")
+        .call(x1Axis);
+
+    svg1.append("g")
+        .attr("class", "y1 axis")
+        .call(y1Axis);
+
+    svg2.append("g")
+        .attr("class", "x2 axis")
+        .call(x2Axis);
+
+    svg2.append("g")
+        .attr("class", "y2 axis")
+        .call(y2Axis);
+
+    var legend = svg2.selectAll(".legend")
+      .data(targetNames.slice().reverse())
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", width + 70)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", width + 64)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d; });
+  });
+}
+
+    </script>
+  </body>
+</html>

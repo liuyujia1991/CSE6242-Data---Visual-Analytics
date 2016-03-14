@@ -1,0 +1,6 @@
+Q5.b
+I choose only to use the total population of the refugees since population in separate category is pretty sparse. For better comparison, I use Gantt Bar in Tableau to represent those population from each origin to destination. Variation in color also help to attract people’s attention to those large immigrant flows.
+
+Q5.c
+
+I choose the stacked area chart to represent the situation of Afghanistan refugees over the last 4 years. I filter out other countries since studying too many countries at the same time would be challenging. The stacked area chart can not only clearly show the variation in refugee numbers but also be very vivid about how much part each age period takes.

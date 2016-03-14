@@ -1,0 +1,396 @@
+/*steps*/
+
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css);
+
+
+@media only screen and (min-width: 200px) {
+ select
+{
+	font-size: 20.4%;
+    font-family: 'Palanquin', sans-serif;
+	height:6.8px;
+	width:37%;
+}
+}
+
+
+
+@media only screen and (min-width: 300px) {
+ select
+{
+	font-size: 31%;
+    font-family: 'Palanquin', sans-serif;
+	height:10.4px;
+	width:37%;
+}
+}
+
+
+@media only screen and (min-width: 768px) {
+ select
+{
+	font-size: 80%;
+    font-family: 'Palanquin', sans-serif;
+	height:26.4px;
+	width:37%;
+}
+}
+
+
+@media only screen and (min-width: 1170px) {
+ select
+{
+	font-size: 120%;
+    font-family: 'Palanquin', sans-serif;
+	height:40px;
+	width:37%;
+}
+}
+
+#space
+{
+  height:30px;
+}
+
+#c{
+  margin-top:2.6%;
+  margin-left:10%;
+  margin-right:10%;
+  padding-top: 0.7%;
+  padding-bottom:2.1%;
+  margin-bottom:2.1%;
+  background-color: rgba(255,255,255,0);
+  text-align:center;
+}
+
+a{
+ color: white;
+ text-decoration:none;
+ }
+ 
+ a:hover
+ {
+   color: yellow;
+   text-decoration:none;
+ 
+ }
+ 
+body {
+  background-image: url('120.jpg');
+    -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+  background-attachment:fixed;
+  font-size:medium;
+ }
+
+* {
+    box-sizing: border-box;
+}
+
+#progress {
+    padding-left: 5px;
+    list-style-type: none;
+    font-family: arial;
+    font-size: 12px;
+    clear: both;
+    line-height: 1em;
+    margin: 0 -1px;
+    text-align: center;
+}
+
+#progress li {
+    float: left;
+    padding: 10px 30px 10px 40px;
+    background: #333;
+    color: #fff;
+    position: relative;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+    width: 32%;
+    margin: 0 1px;
+}
+
+#progress li:before {
+    content: '';
+    border-left: 16px solid #fff;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+}
+#progress li:after {
+    content: '';
+    border-left: 16px solid #333;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 20;
+}
+
+#progress li.active {
+    background: #555;
+}
+
+#progress li.active:after {
+    border-left-color: #555;
+}
+
+.title2{
+  display: block;
+  color: #F8F8F8;
+  text-shadow: -1px -1px 0 #fff,1px 1px 0 #333,1px 1px 0 #444;
+  font-family: 'Racing Sans One', cursive;
+  font-weight: normal;
+  margin-top:0px;
+}
+
+.subtitle2{
+  display: block;
+  color: #ffffff;
+  font-family: 'Racing Sans One', cursive;
+  font-weight: normal; 
+}
+
+ 
+/* Border styles */
+#table-2 thead, #table-2 tr {
+border-top-width: 5px;
+border-top-style: solid;
+border-top-color: rgba(255, 255, 255,0.2);
+}
+#table-2 {
+width:70%;
+height:60%;
+border-bottom-width: 5px;
+border-bottom-style: solid;
+border-bottom-color: rgba(255, 255, 255,0.2);
+text-align:left;
+table-layout: fixed;
+background-color:rgba(255,255,255,0);
+}
+
+/* Padding and font style */
+#table-2 td, #table-2 th {
+padding: 5px 10px;
+font-size: 180%;
+font-family: 'Palanquin', sans-serif;
+color: #202020;
+background-color:rgba(255,255,255,0);
+}
+
+/* Alternating background colors */
+#table-2 tr:nth-child(even) {
+}
+#table-2 tr:nth-child(odd) {
+}
+
+.myButton {
+  display: inline-block;
+  background:transparent;
+  font-weight:bold;
+  color: #fff;
+  border: 2.2px solid #fff;
+  text-align: center;
+  outline: none;
+  text-decoration: none;
+  transition: background-color 0.2s ease-out,
+              color 0.2s ease-out;
+  overflow:hidden;
+  width: 100%;
+}
+.myButton:hover {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+  border:double 2.2px #202020;
+}
+.myButton:active {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+}
+
+
+
+.myButton2 {
+  display: inline-block;
+  background:transparent;;
+  font-weight:bold;
+  color: #fff;
+  border: 2px solid #fff;
+  text-align: center;
+  outline: none;
+  text-decoration: none;
+  transition: background-color 0.2s ease-out,
+              color 0.2s ease-out;
+  overflow:hidden;
+}
+.myButton2:hover {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+  border:double 2px #202020;
+}
+.myButton2:active {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+}
+
+.myButton4 {
+  display: inline-block;
+  background:transparent;
+  font-weight:bold;
+  color: #fff;
+  border: 2.2px solid #fff;
+  text-align: center;
+  outline: none;
+  text-decoration: none;
+  transition: background-color 0.2s ease-out,
+              color 0.2s ease-out;
+  overflow:hidden;
+  width: 100%;
+}
+.myButton4:hover {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+  border:double 2.2px #202020;
+}
+.myButton4:active {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+}
+
+@media only screen and (min-width: 200px) {
+  .title2{
+    font-size: 71%;
+    line-height:14px;
+  }
+  .subtitle2
+  {
+    font-size:37.5%;
+    line-height:34%;
+  }
+  .myButton {
+  border-radius: 4.3px;
+  font-size:14.5%;
+  top:calc(50% - 2.5px);
+  padding:2px;
+}
+ .myButton2 {
+  border-radius: 6px;
+  font-size:15%;
+  width: 65%;
+}
+  .myButton4 {
+  border-radius: 4.3px;
+  font-size:22%;
+  top:calc(50% - 2.5px);
+  padding:2px;
+}
+}
+
+@media only screen and (min-width: 300px) {
+  .title2{
+    font-size: 110%;
+    line-height:21px;
+  }
+  .subtitle2
+  {
+    font-size:57%;
+    line-height:52%;
+  }
+  .myButton {
+  border-radius: 6.5px;
+  font-size:22%;
+  top:calc(50% - 4px);
+  padding:2.6px;
+}
+ .myButton2 {
+  border-radius: 9px;
+  font-size:23%;
+  width: 65%;
+}
+  .myButton4 {
+  border-radius: 6.5px;
+  font-size:34%;
+  top:calc(50% - 4px);
+  padding:2.6px;
+}
+}
+
+@media only screen and (min-width: 768px) {
+  .title2{
+    font-size: 278%;
+    line-height:53px;
+  }
+  .subtitle2{
+    font-size: 145%;
+    line-height:132%;
+  }
+  .myButton {
+  border-radius: 16.5px;
+  font-size:56%;
+  top:calc(50% - 10px);
+  padding:7px;
+}
+ .myButton2 {
+  border-radius: 23px;
+  font-size:60%;
+  width: 65%;
+}
+  .myButton4 {
+  border-radius: 16.5px;
+  font-size:86%;
+  top:calc(50% - 10px);
+  padding:7px;
+}
+}
+@media only screen and (min-width: 1170px) {
+  .title2{
+    font-size: 420%;
+    font-weight: 300;
+    line-height:80px;
+  }
+  .subtitle2{
+    font-size: 220%;
+    line-height:200%;
+  }
+  .myButton {
+  border-radius: 25px;
+  font-size:85%;
+  top:calc(50% - 15px);
+  padding:10px;
+}
+  .myButton4 {
+  border-radius: 25px;
+  font-size:130%;
+  top:calc(50% - 15px);
+  padding:15px;
+}
+ .myButton2 {
+  border-radius: 35px;
+  font-size:90%;
+  width: 65%;
+}
+}

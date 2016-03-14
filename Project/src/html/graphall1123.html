@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <!--This page is designed and built by Yi-Nung Yeh-->
+    <link href='https://fonts.googleapis.com/css?family=Palanquin:700' rel='stylesheet' type='text/css'>
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 960px;
+}
+
+text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+</style>
+</head>
+
+
+<body style="overflow-x:yes;">
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<input type="hidden" description="test" value="2">
+<form>
+  <label><input type="radio" name="mode" value="grouped"> Grouped</label>
+  <label><input type="radio" name="mode" value="stacked" checked> Stacked</label>
+</form>
+<div align="left" style="padding-right:30px">
+<h3>Select A Nutrition to See the Comparison:</h3>
+<select id="comboA" onchange="get_nutrition(this)">
+<option value="Vitamin A, IU" selected>Vitamin A</option>
+<option value="Vitamin B-12">Vitamin B-12</option>
+<option value="Vitamin C, total ascorbic acid">Vitamin C</option>
+<option value="Vitamin D">Vitamin D</option>
+<option value="Vitamin E (alpha-tocopherol)">Vitamin E</option>
+<option value="Iron, Fe">Iron</option>
+<option value="Calcium, Ca">Calcium</option>
+<option value="">Fat Calorie</option>
+<option value="Protein">Protein</option>
+<option value="Energy">Energy</option>
+</select>
+</div>
+
+<script>
+
+$.ajaxSetup({async:false}); 
+	
+var json=null;
+
+var id = $('input[description="test"]').val();  
+   $.post('nu_all.php',{id:id},function(d01){  
+   json=d01;
+});
+	
+
+$.ajaxSetup({async:true});
+
+d01=JSON.parse(json)[0][0];
+d02=JSON.parse(json)[0][1];
+d03=JSON.parse(json)[0][2];
+d11=JSON.parse(json)[1][0];
+d12=JSON.parse(json)[1][1];
+d13=JSON.parse(json)[1][2];
+d21=JSON.parse(json)[2][0];
+d22=JSON.parse(json)[2][1];
+d23=JSON.parse(json)[2][2];
+d31=JSON.parse(json)[3][0];
+d32=JSON.parse(json)[3][1];
+d33=JSON.parse(json)[3][2];
+d41=JSON.parse(json)[4][0];
+d42=JSON.parse(json)[4][1];
+d43=JSON.parse(json)[4][2];
+d51=JSON.parse(json)[5][0];
+d52=JSON.parse(json)[5][1];
+d53=JSON.parse(json)[5][2];
+d61=JSON.parse(json)[6][0];
+d62=JSON.parse(json)[6][1];
+d63=JSON.parse(json)[6][2];
+
+var data={};
+data['mon']=[d01,d02,d03];
+data['tue']=[d11,d12,d13];
+data['wed']=[d21,d22,d23];
+data['thu']=[d31,d32,d33];
+data['fri']=[d41,d42,d43];
+data['sat']=[d51,d52,d53];
+data['sun']=[d61,d62,d63];
+
+var monmeal=[];
+var tuemeal=[];
+var wedmeal=[];
+var thumeal=[];
+var frimeal=[];
+var satmeal=[];
+var sunmeal=[];
+var weekmeal=[];
+
+
+
+function get_nutrition(sel) {
+  var current_description = sel.value;
+
+    for( var i=0;i<3;i++)
+	{
+	   JSON.parse(data.mon[i]).map(function(d){if(d.description==current_description){monmeal.push(d.value);}});
+	   JSON.parse(data.tue[i]).map(function(d){if(d.description==current_description){tuemeal.push(d.value);}});
+	   JSON.parse(data.wed[i]).map(function(d){if(d.description==current_description){wedmeal.push(d.value);}});
+	   JSON.parse(data.thu[i]).map(function(d){if(d.description==current_description){thumeal.push(d.value);}});
+	   JSON.parse(data.fri[i]).map(function(d){if(d.description==current_description){frimeal.push(d.value);}});
+	   JSON.parse(data.sat[i]).map(function(d){if(d.description==current_description){satmeal.push(d.value);}});
+	   JSON.parse(data.sun[i]).map(function(d){if(d.description==current_description){sunmeal.push(d.value);}});
+	}
+	weekmeal.push(monmeal);
+	weekmeal.push(tuemeal);
+	weekmeal.push(wedmeal);
+	weekmeal.push(thumeal);
+	weekmeal.push(frimeal);
+	weekmeal.push(satmeal);
+	weekmeal.push(sunmeal);
+	console.log(weekmeal);
+
+
+	var crimea=weekmeal;
+	
+	
+var causes = [0, 1, 2];
+
+
+var n = 3, // number of layers
+    m = 7, // number of samples per layer
+    stack = d3.layout.stack(),
+    layers = d3.layout.stack()(causes.map(function(c) {
+    return crimea.map(function(d,i) {
+      return {x: i, y: d[c]};
+    });
+    }));
+    yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
+    yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
+
+var margin = {top: 40, right: 10, bottom: 20, left: 10},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .domain(d3.range(m))
+    .rangeRoundBands([0, width], .08);
+
+var y = d3.scale.linear()
+    .domain([0, yStackMax])
+    .range([height, 0]);
+
+var color = d3.scale.linear()
+    .domain([0, n - 1])
+    .range(["#aad", "#556"]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .tickSize(0)
+    .tickPadding(6)
+    .orient("bottom");
+	
+var yAxis = d3.svg.axis()
+.scale(y)
+.orient("left");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	
+var layer = svg.selectAll(".layer")
+    .data(layers)
+  .enter().append("g")
+    .attr("class", "layer")
+    .style("fill", function(d, i) { return color(i); });
+
+var rect = layer.selectAll("rect")
+    .data(function(d) { return d; })
+  .enter().append("rect")
+    .attr("x", function(d) { return x(d.x); })
+    .attr("y", height)
+    .attr("width", x.rangeBand())
+    .attr("height", 0);
+
+rect.transition()
+    .delay(function(d, i) { return i * 10; })
+    .attr("y", function(d) { return y(d.y0 + d.y); })
+    .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); });
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+	
+svg.append("g")
+      .attr("class", "axis axis--y")
+      .attr("transform", "translate(" + width + ",0)")
+      .call(yAxis)
+	  .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text(function(d){return "Amount of "+current_description;});
+
+d3.selectAll("input").on("change", change);
+
+var timeout = setTimeout(function() {
+  d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
+}, 2000);
+
+function change() {
+  clearTimeout(timeout);
+  if (this.value === "grouped") transitionGrouped();
+  else transitionStacked();
+}
+
+function transitionGrouped() {
+  y.domain([0, yGroupMax]);
+
+  rect.transition()
+      .duration(500)
+      .delay(function(d, i) { return i * 10; })
+      .attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
+      .attr("width", x.rangeBand() / n)
+    .transition()
+      .attr("y", function(d) { return y(d.y); })
+      .attr("height", function(d) { return height - y(d.y); });
+}
+
+function transitionStacked() {
+  y.domain([0, yStackMax]);
+
+  rect.transition()
+      .duration(500)
+      .delay(function(d, i) { return i * 10; })
+      .attr("y", function(d) { return y(d.y0 + d.y); })
+      .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
+    .transition()
+      .attr("x", function(d) { return x(d.x); })
+      .attr("width", x.rangeBand());
+}
+
+
+}
+
+</script>
+

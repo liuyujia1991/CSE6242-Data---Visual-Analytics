@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF8">
+		<title>Q1</title>
+		<script type="text/javascript" src="../lib/d3/d3.v3.js"></script>
+		<style type="text/css">
+			
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			//Width and height
+			var w = 1000;
+			var h = 600;
+			var padding = 50;
+			
+			var speciesName = ["setosa","versicolor","virginica"];
+			
+			var symbolScale =  d3.scale.ordinal()
+  								 .domain(["setosa","versicolor","virginica"])
+ 								 .range([ "triangle-up", "circle", "square"]);
+
+			d3.tsv("iris.tsv", function(dataset) {
+  				dataset.forEach(function(d) {
+    				d.sepalLength = +d.sepalLength;
+    				d.sepalWidth = +d.sepalWidth;
+    				d.petalLength = +d.petalLength;
+    				d.petalWidth = +d.petalWidth;
+  				})
+
+				var x1Scale = d3.scale.linear()
+								 	 .domain([d3.min(dataset, function(d) { return d.sepalLength; }), d3.max(dataset, function(d) { return d.sepalLength; })])
+								 	 .range([padding, w - padding * 2]);
+
+				var y1Scale = d3.scale.sqrt()
+								 	 .domain([d3.min(dataset, function(d) { return d.sepalWidth; }), d3.max(dataset, function(d) { return d.sepalWidth; })])
+								 	 .range([h - padding, padding]);
+								 	 
+				var x2Scale = d3.scale.linear()
+								 	 .domain([d3.min(dataset, function(d) { return d.petalLength; }), d3.max(dataset, function(d) { return d.petalLength; })])
+								 	 .range([padding, w - padding * 2]);
+
+				var y2Scale = d3.scale.linear()
+								 	 .domain([d3.min(dataset, function(d) { return d.petalWidth; }), d3.max(dataset, function(d) { return d.petalWidth; })])
+								 	 .range([h - padding, padding]);
+			
+				var x1Axis = d3.svg.axis()
+							  .scale(x1Scale)
+							  .orient("bottom")
+							  .ticks(10);
+
+				var y1Axis = d3.svg.axis()
+							  .scale(y1Scale)
+							  .orient("left")
+							  .ticks(10);
+							  
+				var x2Axis = d3.svg.axis()
+							  .scale(x2Scale)
+							  .orient("bottom")
+							  .ticks(10);
+
+				var y2Axis = d3.svg.axis()
+							  .scale(y2Scale)
+							  .orient("left")
+							  .ticks(10);
+				
+				//Create chart1
+				var chart1 = d3.select("body")
+						   .append("svg")
+						   .attr("width", w)
+						   .attr("height", h);
+				
+				//Create axis
+				chart1.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(0," + (h - padding) + ")")
+					.call(x1Axis)
+					.append("text")
+      				.attr("x", w-2*padding)
+      				.attr("y", 20)
+      				.attr("dy", ".71em")
+      				.style("text-anchor", "end")
+      				.text("sepalLength");
+		    	
+		    	chart1.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(" + padding + ",0)")
+					.call(y1Axis)
+					.append("text")
+					.attr("class", "label")
+            		.attr("transform", "rotate(-90)")
+            		.attr("x", -padding)
+            		.attr("y", 6)
+           		    .attr("dy", ".71em")
+            		.style("text-anchor", "end")
+            		.text("sepalWidth");
+	
+				//Create points
+				chart1.selectAll("path")
+			   	   .data(dataset)
+			       .enter()
+			   	   .append("path")
+			   	   .attr("transform", function(d) { return "translate(" + x1Scale(d.sepalLength) + "," + y1Scale(d.sepalWidth) + ")"; })
+			       .attr("d", d3.svg.symbol()
+			       .type( function(d) { return symbolScale(d.species) })
+			       .size( function(d) { return 10*Math.sqrt(d.sepalLength) * Math.sqrt(d.sepalLength)}));
+			       	
+			    //Create legend
+			    var legend = chart1.selectAll(".legend")
+      							.data(speciesName)
+    							.enter().append("g")
+      							.attr("class", "legend")
+      							.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+                legend.append("path")
+                	  .attr("transform", "translate(920, 12)")
+                	  .attr("d",  d3.svg.symbol()
+			       	  .type( function(d) { return symbolScale(d) }));
+                
+  				legend.append("text")
+  				      .attr("x", w)
+   				      .attr("y", 10)
+   				      .attr("dy", ".35em")
+     				  .style("text-anchor", "end")
+    				  .text(function(d) { return d; });
+			    
+					       	
+			    //Create chart2
+				var chart2 = d3.select("body")
+						   .append("svg")
+						   .attr("width", w)
+						   .attr("height", h);
+				
+				//Create axis
+				chart2.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(0," + (h - padding) + ")")
+					.call(x2Axis)
+					.append("text")
+      				.attr("x", w-2*padding)
+      				.attr("y", 20)
+      				.attr("dy", ".71em")
+      				.style("text-anchor", "end")
+      				.text("petalLength");
+		    
+		    	chart2.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(" + padding + ",0)")
+					.call(y2Axis)
+					.append("text")
+					.attr("class", "label")
+            		.attr("transform", "rotate(-90)")
+            		.attr("x", -padding)
+            		.attr("y", 6)
+           		    .attr("dy", ".71em")
+            		.style("text-anchor", "end")
+            		.text("petalWidth");
+	
+				//Create points
+				chart2.selectAll("path")
+			   	   .data(dataset)
+			       .enter()
+			   	   .append("path")
+			   	   .attr("transform", function(d) { return "translate(" + x2Scale(d.petalLength) + "," + y2Scale(d.petalWidth) + ")"; })
+			       .attr("d", d3.svg.symbol()
+			       .type( function(d) { return symbolScale(d.species) }));
+			    
+			    //Create legend
+			    var legend = chart2.selectAll(".legend")
+      							.data(speciesName)
+    							.enter().append("g")
+      							.attr("class", "legend")
+      							.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+                legend.append("path")
+                	  .attr("transform", "translate(920, 12)")
+                	  .attr("d",  d3.svg.symbol()
+			       	  .type( function(d) { return symbolScale(d) }));
+                
+  				legend.append("text")
+  				      .attr("x", w)
+   				      .attr("y", 10)
+   				      .attr("dy", ".35em")
+     				  .style("text-anchor", "end")
+    				  .text(function(d) { return d; }); 		  		
+			})
+
+		</script>
+	</body>
+</html>

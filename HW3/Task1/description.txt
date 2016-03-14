@@ -1,0 +1,1 @@
+In map procedure, I splits the line into tokens separated by a tab and emits a key pair of <node, weight> using the second and third tokens in each line. Via the reduce method, I just sum up the value of each key to get the final output.

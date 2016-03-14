@@ -1,0 +1,12 @@
+c(i):
+
+There are 1770 choices in the event column. After cluster and merger items in all clusters, the choices is reduced to 1644. The choices for venue reduce from 234 to 142 using the same manipulation.
+
+c(iii):
+
+The “event” column contains only nominal data.
+The “date” column contains ordinal data.
+
+c(v):
+
+Since the “venue” column has most of its content abbreviated, it makes more sense to turn the rest to shorthanded form too. We can choose the text facet of the “venue” column and filter each non-abbreviated words and replace them with their abbreviated form.

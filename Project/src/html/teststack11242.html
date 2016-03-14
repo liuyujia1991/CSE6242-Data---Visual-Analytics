@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+
+<!--This page is designed and built by Yi-Nung Yeh-->
+<link href="bootstrap.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Palanquin:700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Sigmar+One|Fredericka+the+Great|Cabin+Sketch|Denk+One|Racing+Sans+One|Carter+One|Lemon|Knewave' rel='stylesheet' type='text/css'>
+	
+<style>
+body{
+
+height:1500px;
+padding-left:30px;
+
+ }
+ 
+ h3{
+  display: block;
+  color: black;
+   
+  margin-top: 0px;
+  font-family: 'Racing Sans One', cursive;
+  font-weight: normal; 
+  font-size: 30px;
+}
+
+.axis text {
+  font: 22px sans-serif;
+}
+
+text {
+  font: 22px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+label {
+  font: 22px sans-serif;
+}
+
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis--x path {
+  display: none;
+}
+
+select
+{
+  width:300px;
+  height:40px;
+  font-size:24px;
+}
+
+select
+{
+	font-size: 17px;
+    font-family: 'Palanquin', sans-serif;
+	height:35px;
+	width:500px;
+}
+
+.title2{
+  display: block;
+  color: black;
+   
+  margin-top: 0px;
+  font-family: 'Racing Sans One', cursive;
+  font-weight: normal; 
+  font-size: 50px;
+  line-height:80px;
+   
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 12px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+</style>
+</head>
+
+<body style="overflow-x:yes;overflow-y:auto;">
+<input type="hidden" description="test" value="2"> 
+<br>
+<br>
+<h1 align="center" class="title2" align="center">Weekly Nutrition Comparison</h1>
+<br>
+<br>
+<div align="center">
+<select align="center" class="selectday" onChange="location = this.options[this.selectedIndex].value;">
+<option value="#">Select an Analysis</option>
+<option value="./rp/nutrition_analysis.php">Nutritions of Monday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/tues.php">Nutritions of Tuesday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/wed.php">Nutritions of Wednesday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/thur.php">Nutritions of Thursday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/fri.php">Nutritions of Friday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/satu.php">Nutritions of Saturday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/sun.php">Nutritions of Sunday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./teststack1124.html">Weekly Nutritions Comparison</option>
+</select>
+</div>
+<br>
+<br>
+<div align="left" style="padding-right:30px">
+<h3>Select A Nutrition:</h3>
+<select id="comboA" onchange="get_nutrition(this)">
+<option value="#" selected>Select</option>
+<option value="Vitamin A, IU">Vitamin A</option>
+<option value="Vitamin B-12">Vitamin B-12</option>
+<option value="Vitamin C, total ascorbic acid">Vitamin C</option>
+<option value="Vitamin D">Vitamin D</option>
+<option value="Vitamin E (alpha-tocopherol)">Vitamin E</option>
+<option value="Iron, Fe">Iron</option>
+<option value="Calcium, Ca">Calcium</option>
+<option value="Sodium, Na">Sodium, Na</option>
+<option value="Potassium, K">Potassium, K</option>
+<option value="Fiber, total dietary">Fiber, total dietary</option>
+<option value="Sugars, total">Sugars, total</option>
+<option value="Carbohydrate, by difference">Carbohydrate, by difference</option>
+<option value="Cholesterol">Cholesterol</option>
+<option value="">Fat Calorie</option>
+<option value="Total lipid (fat)">Total lipid (fat)</option>
+<option value="Fatty acids, total saturated">Fatty acids, total saturated</option>
+<option value="Protein">Protein</option>
+<option value="Energy">Energy</option>
+</select>
+
+
+<form>
+  <label><input type="radio" name="mode" id="mode" value="grouped"> Grouped</label>
+  <label><input type="radio" name="mode" id="mode"  value="stacked" checked> Stacked</label>
+</form>
+<br>
+<br>
+</div>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script>
+
+
+var meals = [0, 1, 2];
+
+$.ajaxSetup({async:false}); 
+	
+var json=null;
+
+var id = $('input[description="test"]').val();  
+   $.post('nu_all.php',{id:id},function(d01){  
+   json=d01;
+});
+	
+
+$.ajaxSetup({async:true});
+
+d01=JSON.parse(json)[0][0];
+d02=JSON.parse(json)[0][1];
+d03=JSON.parse(json)[0][2];
+d11=JSON.parse(json)[1][0];
+d12=JSON.parse(json)[1][1];
+d13=JSON.parse(json)[1][2];
+d21=JSON.parse(json)[2][0];
+d22=JSON.parse(json)[2][1];
+d23=JSON.parse(json)[2][2];
+d31=JSON.parse(json)[3][0];
+d32=JSON.parse(json)[3][1];
+d33=JSON.parse(json)[3][2];
+d41=JSON.parse(json)[4][0];
+d42=JSON.parse(json)[4][1];
+d43=JSON.parse(json)[4][2];
+d51=JSON.parse(json)[5][0];
+d52=JSON.parse(json)[5][1];
+d53=JSON.parse(json)[5][2];
+d61=JSON.parse(json)[6][0];
+d62=JSON.parse(json)[6][1];
+d63=JSON.parse(json)[6][2];
+
+var data={};
+data['mon']=[d01,d02,d03];
+data['tue']=[d11,d12,d13];
+data['wed']=[d21,d22,d23];
+data['thu']=[d31,d32,d33];
+data['fri']=[d41,d42,d43];
+data['sat']=[d51,d52,d53];
+data['sun']=[d61,d62,d63];
+
+var margin = {top: 20, right: 100, bottom: 30, left: 100},
+    width = 1300 - margin.left - margin.right,
+    height = 750 - margin.top - margin.bottom;
+	
+var n = 3, // number of layers
+    m = 7, // number of samples per layer
+    stack = d3.layout.stack();
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .08);
+
+var y = d3.scale.linear()
+    .rangeRound([height, 0]);
+
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .tickSize(0)
+    .tickPadding(6)
+	.tickFormat(function(d){if(d==0){return "Monday";} else if(d==1){return "Tuesday";} else if(d==2){return "Wednesday";} else if(d==3){return "Thursday";} else if(d==4){return "Friday";} else if(d==5){return "Saturday";} else if(d==6){return "Sunday";}})
+    .orient("bottom");
+	
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	
+
+
+function get_nutrition(sel) {
+  var current_description = sel.value;
+
+
+  var monmeal=[];
+  var tuemeal=[];
+  var wedmeal=[];
+  var thumeal=[];
+  var frimeal=[];
+  var satmeal=[];
+  var sunmeal=[];
+  var weekmeal=[];
+  
+  var week_name=[];
+  var mon_recipe_name=[];
+  var tue_recipe_name=[];
+  var wed_recipe_name=[];
+  var thu_recipe_name=[];
+  var fri_recipe_name=[];
+  var sat_recipe_name=[];
+  var sun_recipe_name=[];
+  
+  var unit=null;
+  
+  if(current_description=="Energy")
+  {
+    for( var i=0;i<3;i++)
+	{
+	   JSON.parse(data.mon[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){unit=d.unitName; mon_recipe_name.splice(i, 0, d.recipeID); monmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.tue[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){tue_recipe_name.splice(i, 0, d.recipeID); tuemeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.wed[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){wed_recipe_name.splice(i, 0, d.recipeID); wedmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.thu[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){thu_recipe_name.splice(i, 0, d.recipeID); thumeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.fri[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){fri_recipe_name.splice(i, 0, d.recipeID); frimeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sat[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){sat_recipe_name.splice(i, 0, d.recipeID); satmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sun[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){sun_recipe_name.splice(i, 0, d.recipeID); sunmeal.splice(i, 0, d.value);}});
+	}
+  }
+  else
+  {
+    for( var i=0;i<3;i++)
+	{
+	   JSON.parse(data.mon[i]).map(function(d){if(d.description==current_description){unit=d.unitName; mon_recipe_name.splice(i, 0, d.recipeID); monmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.tue[i]).map(function(d){if(d.description==current_description){tue_recipe_name.splice(i, 0, d.recipeID); tuemeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.wed[i]).map(function(d){if(d.description==current_description){wed_recipe_name.splice(i, 0, d.recipeID); wedmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.thu[i]).map(function(d){if(d.description==current_description){thu_recipe_name.splice(i, 0, d.recipeID); thumeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.fri[i]).map(function(d){if(d.description==current_description){fri_recipe_name.splice(i, 0, d.recipeID); frimeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sat[i]).map(function(d){if(d.description==current_description){sat_recipe_name.splice(i, 0, d.recipeID); satmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sun[i]).map(function(d){if(d.description==current_description){sun_recipe_name.splice(i, 0, d.recipeID); sunmeal.splice(i, 0, d.value);}});
+	}
+  }
+	
+	weekmeal.push(monmeal);
+	weekmeal.push(tuemeal);
+	weekmeal.push(wedmeal);
+	weekmeal.push(thumeal);
+	weekmeal.push(frimeal);
+	weekmeal.push(satmeal);
+	weekmeal.push(sunmeal);
+	console.log(weekmeal);
+	
+	week_name.push(mon_recipe_name);
+	week_name.push(tue_recipe_name);
+	week_name.push(wed_recipe_name);
+	week_name.push(thu_recipe_name);
+	week_name.push(fri_recipe_name);
+	week_name.push(sat_recipe_name);
+	week_name.push(sun_recipe_name);
+	console.log(week_name);
+	
+	var target2="-|_|1|2|3|4|5|6|7|8|9|0"; var myRegExp2=new RegExp(target2, 'g'); var replaceText2=" ";
+    var target3="   "; var myRegExp3=new RegExp(target3, 'g'); var replaceText3="";
+	
+   var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d,i) {
+      if(i==0)
+	  {
+		return "Monday:<br>"+"Breakfast: "+week_name[i][0].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Lunch: "+week_name[i][1].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Dinner: "+week_name[i][2].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3);
+	  }
+	  else if(i==1)
+	  {
+		return "Tuesday:<br>"+"Breakfast: "+week_name[i][0].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Lunch: "+week_name[i][1].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Dinner: "+week_name[i][2].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3);
+	  }
+	  else if(i==2)
+	  {
+		return "Wednesday:<br>"+"Breakfast: "+week_name[i][0].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Lunch: "+week_name[i][1].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Dinner: "+week_name[i][2].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3);
+	  }
+	  else if(i==3)
+	  {
+		return "Thursday:<br>"+"Breakfast: "+week_name[i][0].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Lunch: "+week_name[i][1].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Dinner: "+week_name[i][2].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3);
+	  }
+	  else if(i==4)
+	  {
+		return "Friday:<br>"+"Breakfast: "+week_name[i][0].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Lunch: "+week_name[i][1].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Dinner: "+week_name[i][2].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3);
+	  }
+	  else if(i==5)
+	  {
+		return "Saturday:<br>"+"Breakfast: "+week_name[i][0].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Lunch: "+week_name[i][1].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Dinner: "+week_name[i][2].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3);
+	  }
+	  else if(i==6)
+	  {
+		return "Sunday:<br>"+"Breakfast: "+week_name[i][0].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Lunch: "+week_name[i][1].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3)+"<br>"+"Dinner: "+week_name[i][2].replace(myRegExp2, replaceText2).replace(myRegExp3, replaceText3);
+	  }
+  })
+
+svg.call(tip);
+
+var layers = d3.layout.stack()(meals.map(function(c) {
+    return weekmeal.map(function(d,i) {
+      return {x: i, y: d[c]};
+    });
+  }));
+  
+var yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return (d.y0 + d.y)*1.2; }); });
+	
+  x.domain(layers[0].map(function(d) { return d.x; }));
+  y.domain([0, d3.max(layers[layers.length - 1], function(d) { return (d.y0 + d.y)*1.2; })]).nice();	
+	
+  svg.selectAll(".layer").remove();
+  svg.select("#xaxis").remove();
+  svg.select("#yaxis").remove();
+  svg.selectAll(".legend").remove();
+
+var layer = svg.selectAll(".layer")
+    .data(layers)
+  .enter().append("g")
+    .attr("class", "layer")
+    .style("fill", function(d, i) { return color(i); });
+
+var rect = layer.selectAll("rect")
+    .data(function(d) { return d; })
+  .enter().append("rect")
+    .attr("x", function(d) { return x(d.x); })
+    .attr("y", height)
+    .attr("width", x.rangeBand())
+    .attr("height", 0)
+	.on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
+
+rect.transition()
+    .delay(function(d, i) { return i * 10; })
+    .attr("y", function(d) { if(isNaN(d.y)){d.y=0;} if(isNaN(d.y0)){d.y0=0;} return y(d.y + d.y0); })
+    .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); });
+
+svg.append("g")
+    .attr("class", "x axis")
+	.attr("id", "xaxis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+	
+  svg.append("g")
+      .attr("class", "axis axis--y")
+	  .attr("id", "yaxis")
+      .call(yAxis)
+	  .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text(function(d){if(current_description=="") {return "Amount of Fat calorie (calorie)";}else {return "Amount of "+current_description+" ("+unit+")";}});
+	
+legenddata=["Breakfast", "Lunch", "Dinner"];
+							 
+var legend = svg.selectAll(".legend")
+                  .data(legenddata)
+    			  .enter().append("g")
+      			  .attr("class", "legend")
+      			  .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+
+  	legend.append('rect')
+      		.attr("x", width-30)
+      		.attr("width", 18)
+      		.attr("height", 18)
+      		.style("fill", function(d,i){
+  			if(i==0) return "#1f77b4";
+			else if(i==1) return "#ff7f0e";
+			else if(i==2) return "#2ca02c";
+			});
+  
+  	legend.append("text")
+      		.attr("x", width - 40)
+      		.attr("y", 10)
+      		.attr("dy", ".35em")
+      		.style("text-anchor", "end")
+      		.text(function(d){return d;});
+	
+
+d3.selectAll("input").on("change", change);
+
+var timeout = setTimeout(function() {
+  d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
+}, 2000);
+
+function change() {
+  clearTimeout(timeout);
+  if (this.value === "grouped") transitionGrouped();
+  else transitionStacked();
+}
+
+function transitionGrouped() {
+  y.domain([0, yStackMax]);
+
+  rect.transition()
+      .duration(500)
+      .delay(function(d, i) { return i * 10; })
+      .attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
+      .attr("width", x.rangeBand() / n)
+    .transition()
+      .attr("y", function(d) { return y(d.y); })
+      .attr("height", function(d) { return height - y(d.y); });
+}
+
+function transitionStacked() {
+  y.domain([0, yStackMax]);
+
+  rect.transition()
+      .duration(500)
+      .delay(function(d, i) { return i * 10; })
+      .attr("y", function(d) { return y(d.y0 + d.y); })
+      .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
+    .transition()
+      .attr("x", function(d) { return x(d.x); })
+      .attr("width", x.rangeBand());
+}
+
+}
+
+</script>
+</body>

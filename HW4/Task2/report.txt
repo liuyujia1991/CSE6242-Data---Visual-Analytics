@@ -1,0 +1,34 @@
+Section A
+1.
+            J48 -C 0.25 -M 2
+            Time taken to build model: 0.33 seconds
+            Overall accuracy: 82.7276 %
+            Confusion Matrix:
+             a    b   <-- classified as
+ 	    3487  351 |    a = 0
+  	     495  565 |    b = 1
+
+2.
+            SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K 
+            Time taken to build model: 235.29 seconds
+            Overall accuracy: 82.9318 %
+            Confusion Matrix:
+             a     b   <-- classified as
+            3460  378 |    a = 0
+  	     458  602 |    b = 1
+
+3.
+            RandomForest -I 10 -K 0 -S 1
+            Time taken to build model: 2.47 seconds
+            Overall accuracy: 89.0159 %
+            Confusion Matrix:
+             a     b   <-- classified as
+            3692  146 |    a = 0
+  	     392  668 |    b = 1
+
+Section B
+1. The result of Weka is 82.7276%, which is approximately 2% higher than my accuracy rate. I think the difference comes from the fact that C4.5 applies more advanced method to select split point rather than only considering the entropy gain. Moreover, it performs a different pruning method and stop criteria.
+
+2. Random Forest is many decision trees learned in a way which randomly chooses attribute to split every time, and randomly pick up training data. It combine every tree's output to be the result. It usually take less time for testing for a large dataset since each tree has smaller depth and the variance is decreased by this approach.
+
+3.Accuracy rates are all above 80%, showing all model fitted the data well. The Random Forest has the highest accuracy rate. Generally, Random Forest take more time for training than C4.5. From confusion matrices, prediction of “quality = 0” is better since there is more training data for it.

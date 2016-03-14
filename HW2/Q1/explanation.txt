@@ -1,0 +1,5 @@
+Q1.a
+Feature 3 and 4 separate the species better since there are few overlaps between each pair  of species. Feature 1 and 2 did a good job in separating setosa from the rest two, however, versicolor and virginica are mixed together.
+
+Q1.c
+When using log scale, the classification performance is the best. It separates all class with comparatively large distance between them.

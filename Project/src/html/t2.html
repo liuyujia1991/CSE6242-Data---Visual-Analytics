@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+<script>  
+    $(function(){  
+      $.post('url.php',{id:<?=$id;?>},function(data){  
+        alert(data);  
+      });  
+    });  
+</script>  
+/************** or ****************/  
+<script>  
+    $(function(){  
+    var id = $('input[name="test"]').val();  
+      $.post('url.php',{id:id},function(data){  
+        alert(data); 
+      });
+	  var ddd=$.get( "http://52.91.113.244:8080/nutrition?recipeID=Flourless-Almond-Butter-Mug-Cake-1336595" ); 
+	  alert(JSON.stringify(ddd));
+    });  
+</script>  
+<input type="hidden" name="test" value="2">  
+
+
+
+</body>
+</html>

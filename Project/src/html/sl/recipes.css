@@ -1,0 +1,183 @@
+body {
+  background-image: url('118.jpg');
+    -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+  background-attachment:fixed;
+  font-size:medium;
+ }
+
+/*steps*/
+
+#c{
+  margin-top:2.6%;
+  margin-left:10%;
+  margin-right:10%;
+  padding-top: 0.7%;
+  background-color: rgba(255,255,255,0);
+  height:2000px;
+  text-align:center;
+}
+
+a{
+ text-decoration:none;
+ }
+ 
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+.title2{
+  display: block;
+  color: #F8F8F8;
+  text-shadow: -1px -1px 0 #fff,1px 1px 0 #333,1px 1px 0 #444;   
+  margin-top: 0px;
+  font-family: 'Racing Sans One', cursive;
+  font-weight: normal; 
+  
+   
+}
+
+.myButton2 {
+  display: inline-block;
+  background:transparent;
+  width: 30%;
+  color: #fff;
+  border: 2px solid #fff;
+  text-align: center;
+  outline: none;
+  text-decoration: none;
+  font-family: 'Palanquin', sans-serif;
+  transition: background-color 0.2s ease-out,
+              color 0.2s ease-out;
+  overflow:hidden;
+}
+.myButton2:hover {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+  border: 2px double #202020;
+}
+.myButton2:active {
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+  text-decoration:none;
+}
+	
+@media only screen and (min-width: 200px) {
+#table-2 th, #table-2 td
+{
+    font-size:31%;
+    height:12px;
+}
+.title2
+{
+    font-size:71%;
+    line-height:14px;
+}
+.myButton2 {
+  font-size:20.5%;
+  padding: 2px;
+  border-radius:5px;
+  top:calc(50%-3px);
+}
+}
+
+@media only screen and (min-width: 300px) {
+#table-2 th, #table-2 td
+{
+    font-size:47%;
+    height:18px;
+}
+.title2
+{
+    font-size:109%;
+    line-height:21px;
+}
+.myButton2 {
+  font-size:31%;
+  padding: 3px;
+  border-radius:5px;
+  top:calc(50%-4px);
+}
+}
+
+@media only screen and (min-width: 768px) {
+#table-2 th, #table-2 td
+{
+    font-size:118%;
+    height:46px;
+}
+.title2
+{
+    font-size:277%;
+    line-height:53px;
+}
+.myButton2 {
+  font-size:80%;
+  padding: 7px;
+  border-radius:13px;
+  top:calc(50%-10px);
+}
+}
+
+@media only screen and (min-width: 1170px) {
+#table-2 th, #table-2 td
+{
+    font-size:180%;
+    height:70px;
+}
+.title2
+{
+    font-size:420%;
+    line-height:80px;
+}
+.myButton2 {
+  font-size:120%;
+  padding: 10px;
+  border-radius:20px;
+  top:calc(50%-15px);
+}
+}
+ 
+/* Border styles */
+#table-2 thead, #table-2 tr {
+border-top-width: 3px;
+border-top-style: solid;
+border-top-color: rgba(255, 255, 255,0.2);
+}
+#table-2 {
+width:70%;
+height:60%;
+border-bottom-width: 3px;
+border-bottom-style: solid;
+border-bottom-color: rgba(255, 255, 255,0.2);
+text-align:left;
+table-layout: fixed;
+background-color:rgba(255,255,255,0);
+font-family: cursive;
+}
+
+/* Padding and font style */
+#table-2 td, #table-2 th {
+padding: 5px 10px;
+font-family: 'Palanquin', sans-serif;
+color: #ffffff;
+background-color:rgba(255,255,255,0);
+}
+
+/* Alternating background colors */
+#table-2 tr:nth-child(even) {
+}
+#table-2 tr:nth-child(odd) {
+}
+
+

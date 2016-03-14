@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+svg {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<script src="../lib/d3/d3.v3.js"></script>
+<script>
+
+var margin = {top: 20, right: 90, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+//var x = d3.time.scale()
+var x = d3.scale.linear( )
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var z = d3.scale.linear()
+    .range(["white", "steelblue"]);
+
+var formatDay = function (d) {
+      if (d == 0) return "Mon";
+      if (d == 1) return "Tue";
+      if (d == 2) return "Wed";
+      if (d == 3) return "Thu";
+      if (d == 4) return "Fri";
+      if (d == 5) return "Sat";
+      if (d == 6) return "Sun";
+    };
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickFormat(formatDay);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat(d3.format("d"));
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  	.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("day_heatmap.json", function(error, data) {
+
+  x.domain([0, 7]);
+  y.domain(d3.extent(data, function(d){ return d.key; }));
+  z.domain([0, d3.max(data, function(d){ return d3.max(d.values)})]);
+  
+  y.domain([y.domain()[0]-10, y.domain()[1]]);
+  
+  var glucose = svg.selectAll(".glucose")
+      .data(data)
+      .enter( ).append("g")
+      .attr("class", "glucose");
+      
+  glucose.selectAll(".bin")
+      .data(function (d) { return d.values; })
+      .enter( ).append("rect")
+      .attr("class", "bin")
+      .attr("x", function (d, i) { return x(i); })
+      .attr("width", function (d, i) { return  x(i+1) - x(i); })
+      .style("fill", function(d) { return z(d); });
+  
+  glucose.each(function (d) {
+    d3.select(this).selectAll(".bin")
+        .attr("y", y(d.key) )
+        .attr("height", 11 );
+  });
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .append("text")
+      .attr("class", "label")
+      .attr("x", width)
+      .attr("y", -6)
+      .attr("text-anchor", "end")
+      .text("Day");
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("class", "label")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .attr("text-anchor", "end")
+      .attr("transform", "rotate(-90)")
+      .text("Key");
+ 
+	var legend = svg.selectAll(".legend")
+      	.data(z.ticks(6).slice(1).reverse())
+    	.enter().append("g")
+      	.attr("class", "legend")
+      	.attr("transform", function(d, i) { return "translate(" + (width + 20) + "," + (20 + i * 20) + ")"; });
+
+  	legend.append("rect")
+      	.attr("width", 20)
+      	.attr("height", 20)
+      	.style("fill", z);
+
+  	legend.append("text")
+      	.attr("x", 26)
+      	.attr("y", 10)
+      	.attr("dy", ".35em")
+      	.text(String);
+});
+
+</script>

@@ -1,0 +1,41 @@
+
+
+66.1
+
+770673565,"Charlie Wilson's War",81
+10085,"Kaze no tani no Naushika (Nausicaa of the Valley of the Wind) (Warriors of the Wind)",82
+699676866,"The Chocolate War",82
+13263,"The War of the Roses",82
+14011,"Casualties of War",83
+
+507677272,"Ahmed Best",3
+770705336,"Alan Bennett",3
+162659309,"Andy Lau",3
+326433996,"Bill Clinton",3
+162656403,"Billy Dee Williams",3
+
+162654047,"Tilda Swinton",86.6666666666667
+358317901,"Jeremy Bulloch",85.3333333333333
+326391032,"George W. Bush",83.3333333333333
+309684316,"Rena Owen",80.3333333333333
+196103011,"Temuera Morrison",80.3333333333333
+770674077,"Kenneth Colley",78.0
+326433996,"Bill Clinton",77.0
+162733204,"Joel Edgerton",76.6666666666667
+162656296,"Frank Oz",76.0
+162655900,"Alec Guinness",72.25
+
+
+162655731,"James Earl Jones",85.3333333333333
+418638213,"Kenny Baker",85.3333333333333
+425838884,"Peter Mayhew",85.3333333333333
+358317901,"Jeremy Bulloch",85.3333333333333
+162656296,"Frank Oz",80.6666666666667
+
+13
+
+335
+7508
+9081
+10435
+277216

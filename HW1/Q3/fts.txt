@@ -1,0 +1,1 @@
+Before we run full_text queries on a table, the database administrator will create a full_text index on the table. Using full-text query, fts is able to use the index to restrict the search to those documents that match the query string. 

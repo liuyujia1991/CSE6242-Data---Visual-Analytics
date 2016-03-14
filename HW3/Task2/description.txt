@@ -1,0 +1,1 @@
+Splits the content separated by a tab, map a key pair of node and weight and then reduce pairs by sum up the value of each key to get the final output. It is more efficient to implement Spark/Scala than Hadoop/Java since it simplified the procedure to some extent.

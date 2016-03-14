@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <!--This page is designed and built by Yi-Nung Yeh-->
+	<link href="bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Palanquin:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Sigmar+One|Fredericka+the+Great|Cabin+Sketch|Denk+One|Racing+Sans+One|Carter+One|Lemon|Knewave' rel='stylesheet' type='text/css'>
+<style>
+body{
+
+height:1300px;
+padding-left:30px;
+
+ }
+ 
+ h3{
+  display: block;
+  color: black;
+   
+  margin-top: 0px;
+  font-family: 'Racing Sans One', cursive;
+  font-weight: normal; 
+  font-size: 30px;
+}
+
+.axis text {
+  font: 20px sans-serif;
+}
+
+text {
+  font: 20px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis--x path {
+  display: none;
+}
+
+select
+{
+  width:300px;
+  height:40px;
+  font-size:24px;
+}
+
+select
+{
+	font-size: 17px;
+    font-family: 'Palanquin', sans-serif;
+	height:35px;
+	width:500px;
+}
+
+.title2{
+  display: block;
+  color: black;
+   
+  margin-top: 0px;
+  font-family: 'Racing Sans One', cursive;
+  font-weight: normal; 
+  font-size: 50px;
+  line-height:80px;
+   
+}
+
+</style>
+</head>
+
+
+<body style="overflow-x:yes;overflow-y:auto;">
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<input type="hidden" description="test" value="2"> 
+<br>
+<br>
+<h1 align="center" class="title2" align="center">Weekly Nutrition Comparison</h1>
+<br>
+<br>
+<div align="center">
+<select align="center" class="selectday" onChange="location = this.options[this.selectedIndex].value;">
+<option value="#">Select A Nutrition Analysis</option>
+<option value="./rp/nutrition_analysis.php">Nutritions of Monday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/tues.php">Nutritions of Tuesday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/wed.php">Nutritions of Wednesday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/thur.php">Nutritions of Thursday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/fri.php">Nutritions of Friday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/satu.php">Nutritions of Saturday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./rp/sun.php">Nutritions of Sunday Meal Plan v.s. Daily Nutrition Requirement</option>
+<option value="./graphall.html">Weekly Nutritions Comparison</option>
+</select>
+</div>
+<br>
+<br>
+<div align="left" style="padding-right:30px">
+<h3>Select A Nutrition:</h3>
+<select id="comboA" onchange="get_nutrition(this)">
+<option value="Vitamin A, IU" selected>Vitamin A</option>
+<option value="Vitamin B-12">Vitamin B-12</option>
+<option value="Vitamin C, total ascorbic acid">Vitamin C</option>
+<option value="Vitamin D">Vitamin D</option>
+<option value="Vitamin E (alpha-tocopherol)">Vitamin E</option>
+<option value="Iron, Fe">Iron</option>
+<option value="Calcium, Ca">Calcium</option>
+<option value="Sodium, Na">Sodium, Na</option>
+<option value="Potassium, K">Potassium, K</option>
+<option value="Fiber, total dietary">Fiber, total dietary</option>
+<option value="Sugars, total">Sugars, total</option>
+<option value="Carbohydrate, by difference">Carbohydrate, by difference</option>
+<option value="Cholesterol">Cholesterol</option>
+<option value="">Fat Calorie</option>
+<option value="Total lipid (fat)">Total lipid (fat)</option>
+<option value="Fatty acids, total saturated">Fatty acids, total saturated</option>
+<option value="Protein">Protein</option>
+<option value="Energy">Energy</option>
+</select>
+</div>
+<br>
+<script>
+
+$.ajaxSetup({async:false}); 
+	
+var json=null;
+
+var id = $('input[description="test"]').val();  
+   $.post('nu_all.php',{id:id},function(d01){  
+   json=d01;
+});
+	
+
+$.ajaxSetup({async:true});
+
+d01=JSON.parse(json)[0][0];
+d02=JSON.parse(json)[0][1];
+d03=JSON.parse(json)[0][2];
+d11=JSON.parse(json)[1][0];
+d12=JSON.parse(json)[1][1];
+d13=JSON.parse(json)[1][2];
+d21=JSON.parse(json)[2][0];
+d22=JSON.parse(json)[2][1];
+d23=JSON.parse(json)[2][2];
+d31=JSON.parse(json)[3][0];
+d32=JSON.parse(json)[3][1];
+d33=JSON.parse(json)[3][2];
+d41=JSON.parse(json)[4][0];
+d42=JSON.parse(json)[4][1];
+d43=JSON.parse(json)[4][2];
+d51=JSON.parse(json)[5][0];
+d52=JSON.parse(json)[5][1];
+d53=JSON.parse(json)[5][2];
+d61=JSON.parse(json)[6][0];
+d62=JSON.parse(json)[6][1];
+d63=JSON.parse(json)[6][2];
+
+var data={};
+data['mon']=[d01,d02,d03];
+data['tue']=[d11,d12,d13];
+data['wed']=[d21,d22,d23];
+data['thu']=[d31,d32,d33];
+data['fri']=[d41,d42,d43];
+data['sat']=[d51,d52,d53];
+data['sun']=[d61,d62,d63];
+
+
+var margin = {top: 20, right: 80, bottom: 30, left: 20},
+    width = 1000 - margin.left - margin.right,
+    height = 750 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width]);
+
+var y = d3.scale.linear()
+    .rangeRound([height, 0]);
+
+var z = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("right");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	
+var meals = [0, 1, 2];
+
+function get_nutrition(sel) {
+  var current_description = sel.value;
+  
+  
+  
+  var monmeal=[];
+  var tuemeal=[];
+  var wedmeal=[];
+  var thumeal=[];
+  var frimeal=[];
+  var satmeal=[];
+  var sunmeal=[];
+  var weekmeal=[];
+  
+  
+  if(current_description=="Energy")
+  {
+    for( var i=0;i<3;i++)
+	{
+	   JSON.parse(data.mon[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){monmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.tue[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){tuemeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.wed[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){wedmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.thu[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){thumeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.fri[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){frimeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sat[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){satmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sun[i]).map(function(d){if(d.description==current_description  && d.attribute=="ENERC_KCAL"){sunmeal.splice(i, 0, d.value);}});
+	}
+  }
+  else
+  {
+    for( var i=0;i<3;i++)
+	{
+	   JSON.parse(data.mon[i]).map(function(d){if(d.description==current_description){monmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.tue[i]).map(function(d){if(d.description==current_description){tuemeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.wed[i]).map(function(d){if(d.description==current_description){wedmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.thu[i]).map(function(d){if(d.description==current_description){thumeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.fri[i]).map(function(d){if(d.description==current_description){frimeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sat[i]).map(function(d){if(d.description==current_description){satmeal.splice(i, 0, d.value);}});
+	   JSON.parse(data.sun[i]).map(function(d){if(d.description==current_description){sunmeal.splice(i, 0, d.value);}});
+	}
+  }
+	
+	weekmeal.push(monmeal);
+	weekmeal.push(tuemeal);
+	weekmeal.push(wedmeal);
+	weekmeal.push(thumeal);
+	weekmeal.push(frimeal);
+	weekmeal.push(satmeal);
+	weekmeal.push(sunmeal);
+	console.log(weekmeal);
+
+
+
+
+
+  var layers = d3.layout.stack()(meals.map(function(c) {
+    return weekmeal.map(function(d,i) {
+      return {x: i, y: d[c]};
+    });
+  }));
+
+
+  x.domain(layers[0].map(function(d) { return d.x; }));
+  y.domain([0, d3.max(layers[layers.length - 1], function(d) { return (d.y0 + d.y)*1.2; })]).nice();
+  
+  svg.selectAll(".layer").remove();
+  svg.select("#xaxis").remove();
+  svg.select("#yaxis").remove();
+  svg.selectAll(".legend").remove();
+
+  var layer = svg.selectAll(".layer")
+      .data(layers)
+    .enter().append("g")
+      .attr("class", "layer")
+      .style("fill", function(d, i) { return z(i); });
+
+  layer.selectAll("rect")
+      .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.x); })
+      .attr("y", function(d) { if(isNaN(d.y)){d.y=0;} if(isNaN(d.y0)){d.y0=0;} return y(d.y + d.y0); })
+      .attr("height", function(d) { return y(d.y0) - y(d.y + d.y0); })
+      .attr("width", x.rangeBand() - 1);
+
+  svg.append("g")
+      .attr("class", "axis axis--x")
+	  .attr("id", "xaxis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "axis axis--y")
+	  .attr("id", "yaxis")
+      .attr("transform", "translate(" + width + ",0)")
+      .call(yAxis);
+
+legenddata=["Breakfast", "Lunch", "Dinner"];
+							 
+var legend = svg.selectAll(".legend")
+                  .data(legenddata)
+    			  .enter().append("g")
+      			  .attr("class", "legend")
+      			  .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+
+  	legend.append('rect')
+      		.attr("x", width-30)
+      		.attr("width", 18)
+      		.attr("height", 18)
+      		.style("fill", function(d,i){
+  			if(i==0) return "#1f77b4";
+			else if(i==1) return "#ff7f0e";
+			else if(i==2) return "#2ca02c";
+			});
+  
+  	legend.append("text")
+      		.attr("x", width - 40)
+      		.attr("y", 10)
+      		.attr("dy", ".35em")
+      		.style("text-anchor", "end")
+      		.text(function(d){return d;});
+			
+			
+
+
+}
+
+</script>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+</body>

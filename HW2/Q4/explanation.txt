@@ -1,0 +1,5 @@
+Q4.c
+Scaling the radii by the square root of goals scored performances better than the other one. This is because that players have comparatively large range of number of goals, and scaling linearly would let some of the players disappear.  
+
+Q4.g
+I increase the parameter in d3.layout.force(), tunning charge and linkDistance so that nodes are far away from each other. To fit in the visualization, I increase height of the svg accordingly. Besides, I customize the text position for each node so that there would be no overlap.

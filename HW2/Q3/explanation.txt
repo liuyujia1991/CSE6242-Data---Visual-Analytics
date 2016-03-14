@@ -1,0 +1,2 @@
+Q3
+First I load the cvs file into a list called “rows”, which is actually a list of dictionaries. I sort this list by the APPEARANCE value and put the first 50 nodes into the output json file. To create those links, I use brute force search to find those pair that meet the requirement and put them into the output file.

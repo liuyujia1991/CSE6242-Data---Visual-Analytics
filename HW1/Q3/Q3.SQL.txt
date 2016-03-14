@@ -1,0 +1,51 @@
+.mode csv
+CREATE TABLE movies(id integer, name text, score integer);
+.import ./movie-name-score.txt movies
+CREATE TABLE moviecast(movie_id integer, cast_id integer, cast_name text);
+.import ./movie-cast.txt moviecast
+SELECT NULL;
+CREATE INDEX movies_name_index on movies(name);
+CREATE INDEX movies_score_index on movies(score);
+SELECT NULL;
+SELECT avg(score) as average_score FROM movies 
+	WHERE score >= 1;
+SELECT NULL;
+SELECT id, name, score FROM movies 
+	WHERE score > 80 
+	ORDER by score ASC, name ASC LIMIT 5;
+SELECT NULL;
+SELECT cast_id, cast_name, count(cast_name) as movie_count FROM moviecast 
+	GROUP by cast_name 
+	HAVING count(cast_name)==3 
+	ORDER by cast_name 
+	LIMIT 5;
+SELECT NULL;
+SELECT cast_id, cast_name, avg(score) as average_score 
+	FROM movies JOIN moviecast on movies.id = moviecast.movie_id 
+	WHERE score >= 1 
+	GROUP by cast_name 
+	HAVING count(cast_name) >= 3 
+	ORDER by avg(score) DESC, cast_name ASC 
+	LIMIT 10;
+SELECT NULL;
+CREATE VIEW good_collaboration as 
+	SELECT cast_member_id1, cast_member_id2, avg(score) as avg_movie_score, count(*) as movie_count
+	FROM (SELECT movie_id as mid1, cast_id as cast_member_id1 from moviecast)
+	JOIN (SELECT movie_id as mid2, cast_id as cast_member_id2 from moviecast) on mid1 = mid2
+	JOIN movies on id = mid1
+	WHERE cast_member_id1 != cast_member_id2
+	GROUP by cast_member_id1,cast_member_id2
+	HAVING count(*) >= 3 AND avg(score) >=75;
+SELECT NULL;
+SELECT cast_member_id1 as cast_id, cast_name, avg(avg_movie_score) as average_good_collab_score
+	FROM good_collaboration 
+	JOIN (SELECT cast_id as id, cast_name from moviecast) on id = cast_member_id1
+	GROUP by cast_member_id1
+	ORDER by avg(avg_movie_score) DESC
+	LIMIT 5;
+SELECT NULL;
+CREATE VIRTUAL TABLE movie_review USING fts3(id integer, name text, year integer, overview text, popularity decimal);
+.import ./movie-overview.txt movie_review
+SELECT count(*) FROM movie_review WHERE overview MATCH 'best OR worst';
+SELECT NULL;
+SELECT id FROM movie_review WHERE overview MATCH 'life NEAR about';

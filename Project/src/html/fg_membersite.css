@@ -1,0 +1,229 @@
+/*
+Registration/Login Form by html-form-guide.com
+You can customize all the aspects of the form in this style sheet
+*/
+
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css);
+
+
+body{
+ background-color:rgba(255,255,255,0);
+ font-size:medium;
+ }
+ 
+ 
+ span {
+        background: transparent;
+        min-width: 53px;
+        border: none;
+
+        i {
+          font-size: 120%;
+          color: rgba(0, 0, 0, 0.4);
+        }
+      }
+ 
+		 #name
+		 {
+		     font-family: 'Palanquin', sans-serif;
+			 font-size:100%;
+		 }
+		 #password
+		 {
+		     font-family: 'Palanquin', sans-serif;
+			 font-size:100%;
+		 }
+		 #confirm
+		 {
+		     font-family: 'Palanquin', sans-serif;
+			 font-size:100%;
+		 }
+
+#b input {
+ width:200px;
+ height:30px;
+ border:1px solid;
+ vertical-align:middle;
+ }
+
+a{
+text-decoration: none;
+ }
+ 
+ 
+h1{
+  font-family: 'Racing Sans One', cursive;
+  font-size:200%;
+  text-align:center;
+ }
+
+h3{
+  font-family: 'Racing Sans One', cursive;
+  font-size:138%;
+  text-align:center;
+ }
+ 
+ h4{
+  font-size:125%;
+  text-align:center;
+ }
+ 
+iframe{
+  border:none;
+  font-family: 'Oswald', sans-serif;
+  font-size:medium;
+  font-weight:bold;
+  color:#E92F2F;
+ }
+ 
+ $button-background-color: #27AE60;
+ 
+ submit {
+      margin-top: 20px;
+      font-family: 'Palanquin', sans-serif;
+      padding: 5px 0;
+    }
+
+      submit:hover {
+        background: tint($button-background-color, 4%);
+        -webkit-animation: hop 1s;
+        animation: hop 1s;
+      }
+.float {
+  border:solid 1.5px #202020;
+  border-radius: 10px;
+  display: inline-block;
+  background-color: white;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+    transition: background-color 0.2s ease-out,
+              color 0.2s ease-out;
+  overflow:hidden;
+}
+
+.float:hover, .float:focus, .float:active {
+  background-color: #000;
+  color:#fff;
+  -webkit-transform: translateY(-1px);
+  transform: translateY(-1px);
+    transition: background-color 0.3s ease-in,
+              color 0.3s ease-in;
+}
+
+@media only screen and (min-width: 51px) {
+body
+{
+    font-size:17%;
+}
+    	#name
+		 {
+			 width:44px;
+			 height:6px;
+		 }
+		 #password
+		 {
+			 width:44px;
+			 height:6px;
+		 }
+		 #confirm
+		 {
+			 width:44px;
+			 height:6px;
+		 }
+.float {
+  font-size: 21%;
+  font-weight: 300;
+  width:17px;
+  height:7px;
+}
+}
+
+@media only screen and (min-width: 78px) {
+body
+{
+    font-size:26%;
+}
+    	#name
+		 {
+			 width:55px;
+			 height:9.1px;
+		 }
+		 #password
+		 {
+			 width:55px;
+			 height:9.1px;
+		 }
+		 #confirm
+		 {
+			 width:55px;
+			 height:9.1px;
+		 }
+.float {
+  font-size: 28%;
+  font-weight: 300;
+  width:23px;
+  height:8px;
+}
+}
+
+@media only screen and (min-width: 198px) {
+body
+{
+    font-size:66%;
+}
+    	#name
+		 {
+			 width:171px;
+			 height:23px;
+		 }
+		 #password
+		 {
+			 width:171px;
+			 height:23px;
+		 }
+		 #confirm
+		 {
+			 width:171px;
+			 height:23px;
+		 }
+.float {
+  font-size: 82.5%;
+  font-weight: 300;
+  width:66px;
+  height:26.4px;
+}
+}
+
+@media only screen and (min-width: 300px) {
+body
+{
+    font-size:100%;
+}
+    	#name
+		 {
+			 width:260px;
+			 height:35px;
+		 }
+		 #password
+		 {
+			 width:260px;
+			 height:35px;
+		 }
+		 #confirm
+		 {
+			 width:260px;
+			 height:35px;
+		 }
+.float {
+  font-size: 125%;
+  font-weight: 300;
+  width:100px;
+  height:40px;
+}
+}
+
+

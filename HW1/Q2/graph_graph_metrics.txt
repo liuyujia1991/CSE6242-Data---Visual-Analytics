@@ -1,0 +1,25 @@
+Part c:
+
+(1)
+Average node degree:1.385
+
+degree is the indicator of connectivity of a node with others. The larger the average node degree is, the more connected the graph is.
+
+(2)
+Diameter of the graph:7
+
+Diameter is the spread of nodes in the graph. We can travel between any pair of nodes within that number of steps and the diameter is the upper bound.  
+
+(3)
+Average path length:3.742
+This is another parameter to indicate how packed the graph is. Average path length is the average distance we will travel between any pair of nodes in the graph.
+
+Part d:
+
+The 5 movies with highest PageRank scores are:
+name:                        	id:
+The Wolf of Wall Street		106646
+Man of Steel			49521
+Kung Fu Panda			9502
+The Judge			205587
+We’re the Millers		138832

@@ -1,0 +1,1 @@
+First I cut off the points that are low weighted by using the Giant Component filter and the Degree Range filter. The range for Degree Range filter is set to be 6. The layout algorithm I choose for this graph is Force Atlas, and the repulsion strength is 2000. I partition the nodes using modularity class and divide them into 4 groups, by which I color them in different colors.

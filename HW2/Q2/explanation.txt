@@ -1,0 +1,2 @@
+Q2.c
+There doesn’t appear to have vey obvious pattern in the reading by day of week, however, the variation in weekends is slightly larger than that in weekdays. From the blood glucose readings by time of day, the readings are in a sinusoidal pattern, indicating the influence of eating to glucose level.

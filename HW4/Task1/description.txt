@@ -1,0 +1,7 @@
+a. For the initial tree, I calculate entropy and information gain for every attribute and choose the attribute with largest information gain to split the set. For every attribute, I search every value and find the optimal point to split. The stopping criteria is stopping constructing tree when the depth is 6, i.e. the depth of tree is 6.
+
+b. accuracy: 0.8046 (with cross validation)
+
+c. Construct 3 trees using different part of training set, vote respect results to get classification output. This should efficiently reduce the possibility of overfitting. Besides, I set the depth of tree to be 7 instead of 6. 
+
+d. accuracy: 0.8086 (after improvement with cross validation)

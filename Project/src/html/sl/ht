@@ -1,0 +1,29 @@
+<?
+
+$url_r = "http://52.91.113.244:8080/recommendation?userID=".$_SESSION['id'];
+data_r = file_get_contents($url_r);
+
+$obj_r = json_decode(data_r);
+echo $obj_r[0][0];
+echo $obj_r[0][1];
+echo $obj_r[0][2];
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Thu, 12 Nov 2015 03:10:07 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title></title>
+    
+    <!--[if IE]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+  </body>
+</html>

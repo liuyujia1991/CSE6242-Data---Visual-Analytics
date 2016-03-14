@@ -1,0 +1,9 @@
+bigrams = LOAD 's3://ngrams-english-mega/*' AS (bigram:chararray, year:int, count:float, books:float);
+
+A = GROUP bigrams BY bigram;
+
+B = FOREACH A GENERATE group AS bigram,SUM(bigrams.count)/SUM(bigrams.books) AS avg;
+
+result = LIMIT (ORDER B BY avg DESC,bigram ASC) 10;
+
+STORE result INTO 's3://cse6242-yliu732/output/big';

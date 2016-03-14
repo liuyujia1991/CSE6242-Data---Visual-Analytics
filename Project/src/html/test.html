@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="id01"></div>
+
+<script>
+$.getJSON( "http://localhost:8080/nutrition?recipeID=Flourless-Almond-Butter-Mug-Cake-1336595", function( data ){
+  alert( data ); // Logs "jQuery Howto"
+});
+</script>
+
+<script>
+var xmlhttp = new XMLHttpRequest();
+var url = "http://52.91.113.244:8080/nutrition?recipeID=Flourless-Almond-Butter-Mug-Cake-1336595";
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        alert(xmlhttp.responseText);
+    }
+	else
+	{
+		alert(xmlhttp.status);
+	}
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+</script>
+
+</body>
+</html>
